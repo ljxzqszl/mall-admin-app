@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { setCookie, getUserCookie, removeUserCookie } from '@/utils/userCookie';
 
 Vue.use(Vuex);
 
@@ -8,12 +9,7 @@ export default new Vuex.Store({
     // 导航的收放状态
     collapsed: false,
     // 用户信息
-    user: {
-      username: '',
-      appkey: '',
-      role: '',
-      email: '',
-    },
+    user: getUserCookie(),
   },
   mutations: {
     changeCollapsed(state) {
@@ -22,6 +18,14 @@ export default new Vuex.Store({
     setUserInfo(state, userInfo) {
       state.user = userInfo;
     },
+    logout(state) {
+      state.user = {
+        username: '',
+        appkey: '',
+        role: '',
+        email: '',
+      };
+    },
   },
   actions: {
     changeCollapsed({ commit }) {
@@ -29,6 +33,11 @@ export default new Vuex.Store({
     },
     setUserInfo({ commit }, userInfo) {
       commit('setUserInfo', userInfo);
+      setCookie(userInfo);
+    },
+    logout({ commit }) {
+      commit('logout');
+      removeUserCookie();
     },
   },
   modules: {},
