@@ -14,6 +14,8 @@ const asyncRouterMap = [
     component: Home,
     meta: {
       title: '商品',
+      hidden: false,
+      icon: 'inbox',
     },
     children: [
       {
@@ -22,6 +24,8 @@ const asyncRouterMap = [
         component: import('@/views/page/productList.vue'),
         meta: {
           title: '商品列表',
+          hidden: false,
+          icon: 'unordered-list',
         },
       },
       {
@@ -30,6 +34,8 @@ const asyncRouterMap = [
         component: import('@/views/page/productAdd.vue'),
         meta: {
           title: '添加商品',
+          hidden: false,
+          icon: 'file-add',
         },
       },
       {
@@ -38,6 +44,8 @@ const asyncRouterMap = [
         component: import('@/views/page/category.vue'),
         meta: {
           title: '类目管理',
+          hidden: false,
+          icon: 'project',
         },
       },
     ],
@@ -51,6 +59,8 @@ const routes = [
     component: Home,
     meta: {
       title: '首页',
+      hidden: false,
+      icon: 'home',
     },
     children: [
       {
@@ -59,6 +69,8 @@ const routes = [
         component: () => import('@/views/page/index.vue'),
         meta: {
           title: '统计',
+          hidden: false,
+          icon: 'number',
         },
       },
     ],
@@ -69,6 +81,7 @@ const routes = [
     component: Login,
     meta: {
       title: '登录',
+      hidden: true,
     },
   },
 ];
@@ -83,8 +96,10 @@ router.beforeEach((to, from, next) => {
     if (store.state.user.username && store.state.user.appkey && store.state.user.role) {
       if (!isAddRoutes) {
         const menuRoutes = getMenuRoutes(store.state.user.role, asyncRouterMap);
-        router.addRoutes(menuRoutes);
-        store.dispatch('changeMenuRoutes', routes.concat(menuRoutes));
+        store.dispatch('changeMenuRoutes', routes.concat(menuRoutes)).then(() => {
+          router.addRoutes(menuRoutes);
+          next();
+        });
         isAddRoutes = true;
       }
       return next();
