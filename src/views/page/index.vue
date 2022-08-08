@@ -1,7 +1,7 @@
 <template>
   <div class="index">
-    <card />
-    <charts />
+    <Card />
+    <Charts />
   </div>
 </template>
 

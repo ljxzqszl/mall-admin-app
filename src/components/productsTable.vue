@@ -1,5 +1,5 @@
 <template>
-  <a-table :columns="columns" :data-source="data">
+  <a-table :columns="columns" :data-source="tableData" :pagination="page" @change="changePage">
     <div slot="operation">
       <a-button>编辑</a-button>
       <a-button>删除</a-button>
@@ -28,7 +28,7 @@ const columns = [
   },
   {
     title: '类目',
-    dataIndex: 'category',
+    dataIndex: 'categoryName',
     key: 'category',
     ellipsis: true,
   },
@@ -56,45 +56,38 @@ const columns = [
     title: '上架状态',
     dataIndex: 'status',
     key: 'status',
+    customRender(text, record) {
+      return record.status === 1 ? '上架' : '下架';
+    },
   },
   {
     title: '操作',
     dataIndex: 'operation',
     key: 'operation',
+    width: 200,
     scopedSlots: { customRender: 'operation' },
-  },
-];
-
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park, New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 2 Lake Park, London No. 2 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park, Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
   },
 ];
 
 export default {
   data() {
     return {
-      data,
       columns,
     };
+  },
+  props: ['data', 'page'],
+  computed: {
+    tableData() {
+      return this.data.map((item) => ({
+        ...item,
+        key: item.id,
+      }));
+    },
+  },
+  methods: {
+    changePage(page) {
+      this.$emit('change', page);
+    },
   },
 };
 </script>

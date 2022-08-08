@@ -1,6 +1,6 @@
 <template>
-  <div class="main-header">
-    <a-button type="primary" style="margin-bottom: 16px" @click="toggleCollapsed">
+  <div class="slider-nav">
+    <a-button type="primary" @click="toggleCollapsed">
       <a-icon :type="$store.state.collapsed ? 'menu-unfold' : 'menu-fold'" />
     </a-button>
     <div class="breadcrumb">
@@ -50,3 +50,11 @@ export default {
   },
 };
 </script>
+
+<style lang="less">
+.user-info {
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+</style>
