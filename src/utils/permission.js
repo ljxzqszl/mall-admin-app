@@ -2,12 +2,18 @@
  * 角色对应的权限名称
  */
 const roleToRoute = {
-  coustomer: [{ name: 'Product' }, { name: 'ProductList' }, { name: 'ProductAdd' }],
+  coustomer: [
+    { name: 'Product' },
+    { name: 'ProductList' },
+    { name: 'ProductAdd' },
+    { name: 'ProductEdit' },
+  ],
   admin: [
     { name: 'Product' },
     { name: 'ProductList' },
     { name: 'ProductAdd' },
     { name: 'category' },
+    { name: 'ProductEdit' },
   ],
 };
 

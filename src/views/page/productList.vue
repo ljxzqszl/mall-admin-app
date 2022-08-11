@@ -9,6 +9,8 @@
       :page="page"
       @change="changePage"
       :categoryList="categoryList"
+      @edit="editProduct"
+      @remove="removeProduct"
     />
   </div>
 </template>
@@ -70,6 +72,33 @@ export default {
     changePage(page) {
       this.page = page;
       this.getTableData();
+    },
+    editProduct(record) {
+      this.$router.push({
+        name: 'ProductEdit',
+        params: {
+          id: record.id,
+        },
+      });
+    },
+    removeProduct(record) {
+      this.$confirm({
+        title: '确认删除',
+        content: () => (
+          <div style="color:red;">{`确认删除标题为:${record.title}的商品吗?`}</div>
+        ),
+        onOk: () => {
+          api
+            .remove({
+              id: record.id,
+            })
+            .then(() => {
+              this.getTableData();
+            });
+        },
+        onCancel() {},
+        class: 'confirm-box',
+      });
     },
   },
 };

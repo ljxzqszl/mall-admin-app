@@ -39,6 +39,16 @@ const asyncRouterMap = [
         },
       },
       {
+        path: 'edit/:id',
+        name: 'ProductEdit',
+        component: import('@/views/page/productAdd.vue'),
+        meta: {
+          title: '编辑商品',
+          hidden: true,
+          icon: 'file-add',
+        },
+      },
+      {
         path: 'category',
         name: 'Category',
         component: import('@/views/page/category.vue'),
