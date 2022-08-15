@@ -13,6 +13,7 @@
 <script>
 import BasicInfo from '@/components/basicDetail.vue';
 import SaleInfo from '@/components/saleDetail.vue';
+import api from '@/api/product';
 
 export default {
   data() {
@@ -52,6 +53,12 @@ export default {
       };
       if (this.current === 1) {
         // 提交数据
+        api.add(this.form).then(() => {
+          this.$message.success('新增成功');
+          this.$router.push({
+            name: 'ProductList',
+          });
+        });
       } else {
         this.current += 1;
       }
