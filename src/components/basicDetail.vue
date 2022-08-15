@@ -7,10 +7,10 @@
       :label-col="{ span: 5 }"
       :wrapper-col="{ span: 13 }"
     >
-      <a-form-model-item label="标题" prop="title">
+      <a-form-model-item label="标题" prop="title" required>
         <a-input v-model="form.title" />
       </a-form-model-item>
-      <a-form-model-item label="商品描述" required prop="desc">
+      <a-form-model-item label="商品描述" prop="desc">
         <a-input v-model="form.desc" />
       </a-form-model-item>
       <a-form-model-item label="商品类目" required prop="category">
@@ -35,7 +35,7 @@
           <a-select-option value="包邮,最晚次日达"> 包邮,最晚次日达 </a-select-option>
         </a-select>
       </a-form-model-item>
-      <a-form-model-item label=" " class="next-btn">
+      <a-form-model-item label="" class="next-btn" wrapperCol="{span: 24}">
         <a-button type="primary" @click="next">下一步</a-button>
       </a-form-model-item>
     </a-form-model>
@@ -48,18 +48,12 @@ import categoryApi from '@/api/category';
 export default {
   data() {
     return {
-      form: {
-        title: '',
-        desc: '',
-        category: '',
-        c_items: '',
-        tags: '',
-      },
       rules: [],
       categoryList: [],
       categoryItems: [],
     };
   },
+  props: ['form'],
   create() {
     categoryApi.list().then((res) => {
       this.categoryList = res.data;

@@ -1,9 +1,89 @@
 <template>
-  <div></div>
+  <div>
+    <a-form-model
+      ref="ruleForm"
+      :model="form"
+      :rules="rules"
+      :label-col="{ span: 5 }"
+      :wrapper-col="{ span: 13 }"
+    >
+      <a-form-model-item label="商品售价" prop="price" required>
+        <a-input v-model="form.price" />
+      </a-form-model-item>
+      <a-form-model-item label="折扣价格" prop="price_off">
+        <a-input v-model="form.price_off" />
+      </a-form-model-item>
+      <a-form-model-item label="商品库存" required prop="inventory">
+        <a-input v-model="form.inventory" />
+      </a-form-model-item>
+      <a-form-model-item label="计量单位" prop="unit" required>
+        <a-input v-model="form.unit" />
+      </a-form-model-item>
+      <a-form-model-item label="商品相册" prop="images">
+        <a-upload
+          action="'https://mallapi.duyiedu.com/upload/images?appkey=' + $store.state.user.appkey"
+          list-type="picture-card"
+          :file-list="fileList"
+          @preview="handlePreview"
+          @change="handleChange"
+        >
+          <div v-if="fileList.length < 8">
+            <a-icon :type="loading ? 'loading' : 'plus'" />
+            <div class="ant-upload-text">Upload</div>
+          </div>
+        </a-upload>
+        <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+          <img alt="example" style="width: 100%" :src="previewImage" />
+        </a-modal>
+      </a-form-model-item>
+      <a-form-model-item label="" class="next-btn" wrapperCol="{span: 24}">
+        <a-button type="default" @click="prev">上一步</a-button>
+        <a-button type="primary" @click="next">提交</a-button>
+      </a-form-model-item>
+    </a-form-model>
+  </div>
 </template>
 
 <script>
-export default {};
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+}
+export default {
+  data() {
+    return {
+      fileList: [],
+      rules: {},
+      previewVisible: false,
+      previewImage: '',
+    };
+  },
+  props: ['form'],
+  methods: {
+    handleChange(file, fileList) {
+      this.fileList = fileList;
+    },
+    prev() {
+      this.$emit('prev');
+    },
+    next() {
+      this.$emit('next', this.form);
+    },
+    async handlePreview(file) {
+      const obj = file;
+      if (!file.url && !file.preview) {
+        obj.preview = await getBase64(file.originFileObj);
+      }
+      this.previewImage = file.url || file.preview;
+      this.previewVisible = true;
+    },
+    handleCancel() {
+      this.previewVisible = false;
+    },
+  },
+};
 </script>
-
-<style></style>
