@@ -57,13 +57,24 @@ function getBase64(file) {
 export default {
   data() {
     return {
-      fileList: [],
       rules: {},
+      fileList: [],
+      loading: false,
       previewVisible: false,
       previewImage: '',
     };
   },
   props: ['form'],
+  create() {
+    if (this.form.images.length > 0) {
+      this.fileList = this.form.images.map((item, index) => ({
+        uid: index,
+        name: `image-${index}.png`,
+        status: 'done',
+        url: item,
+      }));
+    }
+  },
   methods: {
     handleChange({ file, fileList }) {
       if (file.status === 'done') {

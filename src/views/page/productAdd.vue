@@ -45,6 +45,15 @@ export default {
     BasicInfo,
     SaleInfo,
   },
+  create() {
+    const { id } = this.$route.params;
+    if (id) {
+      // 读取商品详情
+      api.detail(id).then((res) => {
+        this.form = res;
+      });
+    }
+  },
   methods: {
     next(form) {
       this.form = {
@@ -53,12 +62,21 @@ export default {
       };
       if (this.current === 1) {
         // 提交数据
-        api.add(this.form).then(() => {
-          this.$message.success('新增成功');
-          this.$router.push({
-            name: 'ProductList',
+        if (this.$route.params.id) {
+          api.edit(this.form).then(() => {
+            this.$message.success('编辑成功');
+            this.$router.push({
+              name: 'ProductList',
+            });
           });
-        });
+        } else {
+          api.add(this.form).then(() => {
+            this.$message.success('新增成功');
+            this.$router.push({
+              name: 'ProductList',
+            });
+          });
+        }
       } else {
         this.current += 1;
       }

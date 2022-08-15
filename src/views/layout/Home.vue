@@ -3,7 +3,6 @@
     <left-menu :key="key"></left-menu>
     <div :class="{ 'main-app': true, 'extend-app': $store.state.collapsed }">
       <slider-nav></slider-nav>
-      <router-view></router-view>
     </div>
   </div>
 </template>
